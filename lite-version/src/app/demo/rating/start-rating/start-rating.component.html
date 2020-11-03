@@ -1,0 +1,32 @@
+<div class="col-xl-12">
+  <div class="col-md-12 col-xl-12">
+    <h5>{{courseInfo?.course?.course_code}}</h5>
+    <hr>
+    <app-card cardTitle="{{courseInfo?.course?.name | titlecase}}" [options]="false" *ngIf="stages == null && !success_message">
+      <div class="row">
+        <div class="col-md-10"><h5 class="card-title">Teacher: {{courseInfo?.teacher?.first_name | titlecase}} {{courseInfo?.teacher?.last_name | titlecase}}</h5></div>
+        <div class="col-md-2 text-right"><img src="{{getTeacherImage(courseInfo?.user?.image_path)}}" alt="image" height="100" width="100" class="b-r"></div>
+      </div>
+      <p class="card-text">Welcome, Thank you<br>Please rate based on your experience. Accuracy helps the school to evaluate the teachers</p>
+      <a (click)="proceedEvaluation(0)" class="btn btn-primary">Start evaluation</a>
+    </app-card>
+    <app-card cardTitle="{{courseInfo?.course?.name | titlecase}}" [options]="false" *ngIf="success_message">
+      <h5 class="card-title">Teacher: {{courseInfo?.teacher?.first_name | titlecase}} {{courseInfo?.teacher?.last_name | titlecase}}</h5>
+      <p class="card-text">{{success_message}}</p>
+      <a [routerLink]="['/authenticated/view-enrolled-course-list/'+user['id']]" class="btn btn-primary">My course list</a>
+    </app-card>
+    <app-card *ngIf="stages !== null && !success_message" cardTitle="{{courseInfo?.teacher?.first_name | titlecase}} {{courseInfo?.teacher?.last_name | titlecase}}">
+      <h5 class="card-title">{{currentEvaluation?.section?.title}} ({{stages+1}} / {{max_stage}})</h5>
+      <div  *ngFor="let question of currentEvaluation.question; let i = index">
+        <p class="card-text">{{question?.title}}</p>
+        <div class="form-group">
+          <select class="custom-select" #t required (change)="select_a_value(question?.id, t.value)" [ngClass]="{error: validateRating().includes(question?.id)}">
+            <option value="null">On a scale of {{currentEvaluation?.section?.rate_min}}-{{currentEvaluation?.section?.rate_max}}</option>
+            <option *ngFor="let v of [].constructor(currentEvaluation?.section?.rate_max); let i = index" value="{{i+1}}">{{i+1}}</option>
+          </select>
+        </div>
+      </div>
+      <a (click)="proceedEvaluation(stages+1)" class="btn btn-primary">{{stages !== 4 ? 'Next':'Finish'}}</a>
+    </app-card>
+  </div>
+</div>

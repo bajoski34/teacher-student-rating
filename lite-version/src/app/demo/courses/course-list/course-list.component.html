@@ -1,0 +1,131 @@
+<div class="col-md-12">
+  <app-card cardTitle="Course list" blockClass="table-border-style">
+    <div class="table-responsive">
+      <p class="text-center" style="color:red;" *ngIf="validator_toast.message">{{validator_toast.message}}</p>
+      <p class="text-center" style="color:green;" *ngIf="suc_message">{{suc_message}}</p>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th><input type="checkbox" name="cxbox" (click)="checkUncheckAll(!isCheckedAll)"></th>
+          <th>Course code</th>
+          <th>Title</th>
+          <th>Department</th>
+          <th>Teacher</th>
+          <th *ngIf="params">Status</th>
+          <th *ngIf="params">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            <ng-container  *ngIf="courses?.length >0">
+              <tr *ngFor="let course of courses; let i = index;" class="t-list">
+                <td style="width: 5px !important">
+                  <input type="checkbox" *ngIf="params && course?.info?.is_rated == 0" name="cxbox" (click)="selectedToUnEnroll(course.course)">
+                  <input type="checkbox" (click)="selectedToEnroll(course.course)" name="cxbox" *ngIf="!params">
+                  </td>
+                <td>{{course?.course?.course_code}}</td>
+                <td>{{course?.course?.name}}</td>
+                <td>{{course?.department?.name}}</td>
+                <td>{{course?.teacher?.length == 0 ? 'No teacher' : (course?.teacher?.first_name + ' ' +  course?.teacher?.last_name)}}</td>
+                <!-- <td><span type="button" class="btn btn-outline-success sp-bt"><i class="feather icon-check-circle"></i>Rated</span></td> -->
+                <td>
+                  <span type="button" class="btn btn-outline-info sp-bt" *ngIf="params && course?.info?.is_rated == 0">
+                    <i class="feather icon-info"></i>Not rated
+                  </span>
+                  <span type="button" class="btn btn-outline-success sp-bt" *ngIf="params && course?.info?.is_rated == 1">
+                    <i class="feather icon-check-circle"></i>Rated
+                  </span>
+                </td>
+                <td>
+                  <div class="btn-group btn-group-sm" role="group" aria-label="button groups sm" *ngIf="params">
+                    <button type="button" data-toggle="modal" class="btn btn-secondary" (click)="exampleModalPopoversLabel.show(); editItem(course, i)" *ngIf="user?.user?.role == 1">Edit</button>
+                    <button type="button" data-toggle="modal" class="btn btn-secondary" (click)="deleteModalPopoversLabel.show(); editItem(course, i)" *ngIf="user?.user?.role == 1">Delete</button>
+                    <button type="button" class="btn btn-secondary" *ngIf="params && course?.info?.is_rated == 1"
+                    [ngClass]="{'disabled': course?.teacher?.length == 0}"
+                    (click)="reviewAssessment(course?.teacher)">Review performance</button>
+
+                    <button type="button" class="btn btn-secondary"
+                    *ngIf="params && course?.info?.is_rated == 0"
+                    [ngClass]="{'disabled': (course?.teacher?.length == 0 || course?.department?.rating_activation == 0)}"
+                     (click)="rateTeacher(course)">
+                     {{course?.teacher?.length == 0 ? 'No teacher to rate' : (course?.department?.rating_activation == 0 ? 'Rating deactivated' : 'Rate')}}</button>
+                  </div>
+                </td>
+              </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <button class="btn btn-secondary btn-sm event-btn m-2" type="button" *ngIf="listOfCoursesToEnroll?.length > 0 && !params">
+        <span *ngIf="this.submitLoader" class="spinner-grow spinner-grow-sm" role="status"></span>
+        <span *ngIf="this.submitLoader" class="load-text"> Enrolling...</span>
+        <span *ngIf="!this.submitLoader" class="btn-text" (click)="enrollCourse()">Enroll</span>
+      </button>
+      <button class="btn btn-secondary btn-sm event-btn m-2" type="button" *ngIf="listOfCoursesToUnEnroll?.length > 0 && params">
+        <span *ngIf="this.submitLoader" class="spinner-grow spinner-grow-sm" role="status"></span>
+        <span *ngIf="this.submitLoader" class="load-text">un-enrolling...</span>
+        <span *ngIf="!this.submitLoader" class="btn-text" (click)="unenrollCourse()">Un-enroll</span>
+      </button>
+      <div class="col-12 text-center" *ngIf="courses?.length <1">
+        <p>No data available</p>
+        <button class="btn btn-primary" *ngIf="params" [routerLink]="['/authenticated/view-course-list']">Enroll for course</button>
+        <button class="btn btn-primary" *ngIf="!params" [routerLink]="['/authenticated/add-new-course']">Add a Course</button>
+      </div>
+    </div>
+  </app-card>
+
+  <app-ui-modal #exampleModalPopoversLabel>
+    <div class="app-modal-header">
+      <h5 class="modal-title">Update course information</h5>
+      <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close" (click)="exampleModalPopoversLabel.hide()"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="app-modal-body">
+      <form method="POST" [formGroup]="updateCourseForm" enctype="multipart/form-data">
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="inputAddress2">Title</label>
+            <input type="text" class="form-control" id="inputAddress2" value="{{selectedcourse?.course?.name}}" formControlName="name"
+             [ngClass]="{'error': (validator().name.invalid && validator_toast.isSubmited)}" placeholder="{{selectedcourse?.course?.name}}">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputState">Teacher</label>
+            <select id="inputState" class="form-control" formControlName="teacher_id" [ngClass]="{'error': (validator().teacher_id.invalid && validator_toast.isSubmited)}">
+              <option *ngFor="let teacher of teachers |async" value="{{teacher?.profile?.id}}">{{teacher?.profile?.first_name |titlecase}} {{teacher?.profile?.last_name |titlecase}}</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputState">Department</label>
+            <select id="inputState" class="form-control" formControlName="department_id" [ngClass]="{'error': (validator().department_id.invalid && validator_toast.isSubmited)}">
+              <option *ngFor="let department of departments |async" value="{{department?.id}}">{{department?.name |titlecase}}</option>
+            </select>
+          </div>
+          <p *ngIf="(teachers |async)?.length < 1">No teacher <a [routerLink]="['/authenticated/add-new-teacher']">add teacher</a> </p>
+        </div>
+        <p *ngIf="message" class="success">{{message}}</p>
+      </form>
+    </div>
+    <div class="app-modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="exampleModalPopoversLabel.hide()">Close</button>
+      <button class="btn btn-primary event-btn m-2" type="button"(click)="onSubmitUpdateCourse()" *ngIf="!validator_toast.success">
+        <span *ngIf="this.submitLoader" class="spinner-grow spinner-grow-sm" role="status"></span>
+        <span *ngIf="this.submitLoader" class="load-text"> Updating...</span>
+        <span *ngIf="!this.submitLoader" class="btn-text">Save changes</span>
+      </button>
+    </div>
+  </app-ui-modal>
+  <app-ui-modal #deleteModalPopoversLabel>
+    <div class="app-modal-header">
+      <h5 class="modal-title">Delete Department</h5>
+      <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close" (click)="deleteModalPopoversLabel.hide()"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="app-modal-body">
+      <h3>Are you sure you want to <strong style="color: red;">delete </strong>{{selectedcourse?.course?.name}} ({{selectedcourse?.course?.course_code}})</h3>
+    </div>
+    <div class="app-modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="deleteModalPopoversLabel.hide()">Close</button>
+      <button class="btn btn-primary event-btn m-2" type="button"(click)="onSubmitDeleteCourse()" *ngIf="!validator_toast.success">
+        <span *ngIf="this.submitLoader" class="spinner-grow spinner-grow-sm" role="status"></span>
+        <span *ngIf="this.submitLoader" class="load-text"> Deleting...</span>
+        <span *ngIf="!this.submitLoader" class="btn-text">Delete</span>
+      </button>
+    </div>
+  </app-ui-modal>
+</div>

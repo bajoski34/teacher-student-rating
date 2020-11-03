@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-12">
+    <app-card cardTitle="Welcome back" [options]="false">
+      <div class="text-center mb-3">
+        <button type="button" class="btn btn-outline-primary" *ngIf="user?.role == 3"><i class="feather icon-thumbs-up"></i>Rate teacher</button>
+        <button type="button" class="btn btn-outline-primary" *ngIf="user?.role == 2"><i class="feather icon-thumbs-up"></i>View my assessment</button>
+        <button type="button" class="btn btn-outline-primary" [routerLink]="['/authenticated/view-teachers-list']" *ngIf="user?.role == 1"><i class="feather icon-thumbs-up"></i>View teachers assessment</button>
+      </div>
+      <ngb-carousel [showNavigationArrows]="false" [showNavigationIndicators]="false" [interval]="2000">
+        <ng-template ngbSlide>
+          <img class="d-block w-100" src="../../../../assets/images/slider/img-slider-8.jpg" alt="First Slide">
+        </ng-template>
+        <ng-template ngbSlide>
+          <img class="d-block w-100" src="../../../../assets/images/slider/img-slider-9.jpg" alt="Ssecond Slide">
+        </ng-template>
+        <ng-template ngbSlide>
+          <img class="d-block w-100" src="../../../../assets/images/slider/img-slider-10.jpg" alt="Third Slide">
+        </ng-template>
+      </ngb-carousel>
+    </app-card>
+  </div>
+</div>

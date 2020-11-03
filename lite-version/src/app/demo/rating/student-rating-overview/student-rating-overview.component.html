@@ -1,0 +1,35 @@
+<div class="col-md-12">
+  <app-card cardTitle="Course list" blockClass="table-border-style">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Course code</th>
+          <th>Title</th>
+          <th>Teacher</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+            <ng-container  *ngIf="courses?.length >0">
+              <tr *ngFor="let course of courses; let i = index;" class="t-list">
+                <td>{{i+1}}</td>
+                <td>{{course?.course?.course_code}}</td>
+                <td>{{course?.course?.name}}</td>
+                <td>{{course?.teacher?.length == 0 ? 'No teacher' : (course?.teacher?.first_name + ' ' +  course?.teacher?.last_name)}}</td>
+                <td><span type="button" class="btn btn-outline-success sp-bt"><i class="feather icon-check-circle"></i>Rated</span></td>
+                <td><button type="button" class="btn btn-outline-primary"><i class="feather icon-thumbs-up"></i>View assessment</button></td>
+              </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <div class="col-12 text-center" *ngIf="courses?.length <1">
+        <p>No data available</p>
+        <button class="btn btn-primary" [routerLink]="['/authenticated/add-new-course']">Add a Course</button>
+      </div>
+    </div>
+  </app-card>
+
+</div>

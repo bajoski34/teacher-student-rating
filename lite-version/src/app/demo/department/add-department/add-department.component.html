@@ -1,0 +1,22 @@
+<div>
+  <form method="POST" [formGroup]="addDepartmentForm" (ngSubmit)="onSubmitAddDepartment()" enctype="multipart/form-data">
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="inputAddress2">Name</label>
+        <input type="text" class="form-control" id="inputAddress2" formControlName="name" [ngClass]="{'error': (validator().name.invalid && validator_toast.isSubmited)}" placeholder="Department name">
+      </div>
+    </div>
+    <p *ngIf="message">{{message}}</p>
+    <button class="btn btn-primary event-btn m-2" type="submit" *ngIf="!validator_toast.success">
+      <span *ngIf="this.submitLoader" class="spinner-grow spinner-grow-sm" role="status"></span>
+      <span *ngIf="this.submitLoader" class="load-text"> Adding...</span>
+      <span *ngIf="!this.submitLoader" class="btn-text">Add new department</span>
+    </button>
+  </form>
+  <p *ngIf="validator_toast.message" class="success">{{validator_toast.message}}</p>
+  <div *ngIf="validator_toast.success">
+    <button (click)="resetFormField()" class="btn btn-primary mr">Reset and add new department</button>
+    <button (click)="viewDepartmentList()" class="btn btn-primary">View department's list</button>
+  </div>
+</div>
+

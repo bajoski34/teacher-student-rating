@@ -1,0 +1,58 @@
+<div>
+  <form method="POST" [formGroup]="addStudentForm" (ngSubmit)="onSubmitAddStudent()" enctype="multipart/form-data">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputAddress2">First name</label>
+        <input type="text" class="form-control" id="inputAddress2" formControlName="first_name" [ngClass]="{'error': (validator().first_name.invalid && validator_toast.isSubmited)}" placeholder="First name">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputAddress3">Last name</label>
+        <input type="text" class="form-control" id="inputAddress3" formControlName="last_name" placeholder="Last name" [ngClass]="{'error': (validator().last_name.invalid && validator_toast.isSubmited)}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputEmail4">Email</label>
+        <input type="email" class="form-control" id="inputEmail4" formControlName="email" placeholder="Email" [ngClass]="{'error': (validator().email.invalid && validator_toast.isSubmited)}">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputState">Department</label>
+        <select id="inputState" class="form-control" formControlName="department" [ngClass]="{'error': (validator().department.invalid && validator_toast.isSubmited)}">
+          <option *ngFor="let department of departments |async" value="{{department?.id}}">{{department?.name |titlecase}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputState">Gender</label>
+        <select id="inputState" class="form-control" formControlName="gender" [ngClass]="{'error': (validator().gender.invalid && validator_toast.isSubmited)}">
+          <option value="1">Male</option>
+          <option value="2">Female</option>
+        </select>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputState">Picture</label>
+        <div class="input-group cust-file-button">
+          <div class="custom-file" [ngClass]="{'error': (images.length == 0 && validator_toast.isSubmited)}">
+            <input type="file" class="custom-file-input" id="inputGroupFile04" accept="image/*"
+             multiple (change)="handleFileInput($event)">
+            <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p *ngIf="message">{{message}}</p>
+    <!-- <button type="submit" class="btn btn-primary">Add teacher</button> -->
+    <button class="btn btn-primary event-btn m-2" type="submit" *ngIf="!validator_toast.success">
+      <span *ngIf="this.submitLoader" class="spinner-grow spinner-grow-sm" role="status"></span>
+      <span *ngIf="this.submitLoader" class="load-text"> Adding...</span>
+      <span *ngIf="!this.submitLoader" class="btn-text">Add new student</span>
+    </button>
+  </form>
+  <p *ngIf="validator_toast.message" class="success">{{validator_toast.message}}</p>
+  <div *ngIf="validator_toast.success">
+    <button (click)="resetFormField()" class="btn btn-primary mr">Reset and add new student</button>
+    <button (click)="viewTeachersList()" class="btn btn-primary">View student's list</button>
+  </div>
+</div>
+

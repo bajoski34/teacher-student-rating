@@ -1,0 +1,88 @@
+<div class="col-md-12">
+  <app-card cardTitle="Teachers list" blockClass="table-border-style">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Actions</th>
+          <th>
+            <div class="btn-group btn-group-sm" role="group" aria-label="button groups sm">
+              <button type="button" class="btn btn-secondary enabled" (click)="enableAll()">Enable all</button>
+              <button type="button" class="btn btn-secondary error" (click)="disableAll()">Disable all</button>
+            </div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+            <ng-container  *ngIf="departments?.length >0">
+              <tr *ngFor="let department of departments; let i = index;" class="t-list">
+                <td>{{i+1}}</td>
+                <td>{{department?.name}}</td>
+                <td>
+                  <div class="btn-group btn-group-sm" role="group" aria-label="button groups sm">
+                    <button type="button" data-toggle="modal" class="btn btn-secondary" (click)="exampleModalPopoversLabel.show(); editItem(department, i)">Edit</button>
+                    <button type="button" data-toggle="modal" class="btn btn-secondary" (click)="deleteModalPopoversLabel.show(); editItem(department, i)">Delete</button>
+                    <button type="button" class="btn btn-secondary enabled" (click)="enableDisableRating(department)" [ngClass]="{'error': department?.rating_activation == 0}">
+                      {{department?.rating_activation == 0 ? 'Enable rating' : 'Lock rating'}}</button>
+                    <button type="button" class="btn btn-secondary">Review performance</button>
+                  </div>
+                </td>
+              </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <div class="col-12 text-center" *ngIf="departments?.length <1">
+        <p>No data available</p>
+        <button class="btn btn-primary" [routerLink]="['/authenticated/add-new-department']">Add a Department</button>
+      </div>
+    </div>
+  </app-card>
+
+  <app-ui-modal #exampleModalPopoversLabel>
+    <div class="app-modal-header">
+      <h5 class="modal-title">Update department information</h5>
+      <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close" (click)="exampleModalPopoversLabel.hide()"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="app-modal-body">
+      <form method="POST" [formGroup]="updateDepartmentForm" enctype="multipart/form-data">
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="inputAddress2">Name</label>
+            <input type="text" class="form-control" id="inputAddress2" value="{{selectedDepartment?.name}}" formControlName="name"
+             [ngClass]="{'error': (validator().name.invalid && validator_toast.isSubmited)}" placeholder="{{selectedDepartment?.name}}">
+          </div>
+        </div>
+        <p *ngIf="message">{{message}}</p>
+      </form>
+    </div>
+    <div class="app-modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="exampleModalPopoversLabel.hide()">Close</button>
+      <button class="btn btn-primary event-btn m-2" type="button"(click)="onSubmitUpdateStudent()" *ngIf="!validator_toast.success">
+        <span *ngIf="this.submitLoader" class="spinner-grow spinner-grow-sm" role="status"></span>
+        <span *ngIf="this.submitLoader" class="load-text"> Updating...</span>
+        <span *ngIf="!this.submitLoader" class="btn-text">Save changes</span>
+      </button>
+    </div>
+  </app-ui-modal>
+  <app-ui-modal #deleteModalPopoversLabel>
+    <div class="app-modal-header">
+      <h5 class="modal-title">Delete Department</h5>
+      <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close" (click)="deleteModalPopoversLabel.hide()"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="app-modal-body">
+      <h3>Are you sure you want to <strong style="color: red;">delete </strong>{{selectedDepartment?.name}}</h3>
+      <p>Note: Every student belonging to {{selectedDepartment?.name}} will be deleted</p>
+      <p>Note: Every teacher belonging to {{selectedDepartment?.name}} will be deleted</p>
+    </div>
+    <div class="app-modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="deleteModalPopoversLabel.hide()">Close</button>
+      <button class="btn btn-primary event-btn m-2" type="button"(click)="onSubmitDeleteDepartment()" *ngIf="!validator_toast.success">
+        <span *ngIf="this.submitLoader" class="spinner-grow spinner-grow-sm" role="status"></span>
+        <span *ngIf="this.submitLoader" class="load-text"> Deleting...</span>
+        <span *ngIf="!this.submitLoader" class="btn-text">Delete</span>
+      </button>
+    </div>
+  </app-ui-modal>
+</div>

@@ -1,0 +1,110 @@
+<div class="col-md-12">
+  <app-card cardTitle="Teachers list" blockClass="table-border-style">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Image</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Teacher ID</th>
+          <th>Email</th>
+          <th>Gender</th>
+          <th>Department</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            <ng-container  *ngIf="(teachers | async)?.length >0">
+              <tr *ngFor="let teacher of teachers|async" class="t-list">
+                <td><img src="{{fetchPictures(teacher?.profile?.image_path)}}" alt="img" height="35" width="35"></td>
+                <td>{{teacher?.profile?.first_name}}</td>
+                <td>{{teacher?.profile?.last_name}}</td>
+                <td>{{teacher?.profile?.teacher_id}}</td>
+                <td>{{teacher?.profile?.email}}</td>
+                <td>{{teacher?.profile?.gender == 1 ? 'Male' : 'Female'}}</td>
+                <td>{{teacher?.department?.name}}</td>
+                <td>
+                  <div class="btn-group btn-group-sm" role="group" aria-label="button groups sm">
+                    <button type="button" data-toggle="modal" class="btn btn-secondary" (click)="exampleModalPopoversLabel.show(); editItem(teacher)">Edit</button>
+                    <button type="button" class="btn btn-secondary">Review assessment</button>
+                  </div>
+                </td>
+              </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <div class="col-12 text-center" *ngIf="(teachers | async)?.length <1">
+        <p>No data available</p>
+        <button class="btn btn-primary" [routerLink]="['/authenticated/add-new-teacher']">Add a teacher</button>
+      </div>
+    </div>
+  </app-card>
+
+  <app-ui-modal #exampleModalPopoversLabel>
+    <div class="app-modal-header">
+      <h5 class="modal-title">Modal Title</h5>
+      <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close" (click)="exampleModalPopoversLabel.hide()"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="app-modal-body">
+      <form method="POST" [formGroup]="updateTeacherForm" enctype="multipart/form-data">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputAddress2">First name</label>
+            <input type="text" class="form-control" id="inputAddress2" value="{{selectedTeacher?.profile?.first_name}}" formControlName="first_name"
+             [ngClass]="{'error': (validator().first_name.invalid && validator_toast.isSubmited)}" placeholder="{{selectedTeacher?.profile?.first_name}}">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputAddress3">Last name</label>
+            <input type="text" class="form-control" id="inputAddress3" value="{{selectedTeacher?.profile?.last_name}}"
+             formControlName="last_name" placeholder="{{selectedTeacher?.profile?.last_name}}" [ngClass]="{'error': (validator().last_name.invalid && validator_toast.isSubmited)}">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputEmail4">Email</label>
+            <input type="email" class="form-control" id="inputEmail4" formControlName="email" value="{{selectedTeacher?.profile?.email}}"
+             placeholder="{{selectedTeacher?.profile?.email}}" [ngClass]="{'error': (validator().email.invalid && validator_toast.isSubmited)}">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputState">Department</label>
+            <select id="inputState" class="form-control" formControlName="department"
+            [ngClass]="{'error': (validator().department.invalid && validator_toast.isSubmited)}">
+              <option selected disabled>{{selectedTeacher?.department?.name |titlecase}}</option>
+              <option *ngFor="let department of departments |async" value="{{department?.id}}">{{department?.name |titlecase}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputState">Gender</label>
+            <select id="inputState" class="form-control" formControlName="gender" [ngClass]="{'error': (validator().gender.invalid && validator_toast.isSubmited)}">
+              <option value="1">Male</option>
+              <option value="2">Female</option>
+              <option selected disabled>{{selectedTeacher?.profile?.gender == 1 ? 'Male' : 'Female'}}</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputState">Picture</label>
+            <div class="input-group cust-file-button">
+              <div class="custom-file" [ngClass]="{'error': (images.length == 0 && validator_toast.isSubmited)}">
+                <input type="file" class="custom-file-input" id="inputGroupFile04" accept="image/*"
+                 multiple (change)="handleFileInput($event)">
+                <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p *ngIf="message">{{message}}</p>
+      </form>
+    </div>
+    <div class="app-modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="exampleModalPopoversLabel.hide()">Close</button>
+      <button class="btn btn-primary event-btn m-2" type="button"(click)="onSubmitUpdateTeacher()" *ngIf="!validator_toast.success">
+        <span *ngIf="this.submitLoader" class="spinner-grow spinner-grow-sm" role="status"></span>
+        <span *ngIf="this.submitLoader" class="load-text"> Updating...</span>
+        <span *ngIf="!this.submitLoader" class="btn-text">Save changes</span>
+      </button>
+    </div>
+  </app-ui-modal>
+</div>
