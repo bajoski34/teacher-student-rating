@@ -157,7 +157,7 @@ class Controller extends BaseController
         }
         return response()->json('success');
     }
-    public function getAllTeachers(){
+    public function getAllTeachers(Request $request){
         $teachers = Teacher::all();
         $allDetails = [];
         $i=0;
@@ -460,6 +460,34 @@ class Controller extends BaseController
             'student_id'=> $student_id,
             'data' => $request->all()
         ]);
+    }
+    public function getTeachersAssessment($id){
+        $data[2];
+        $data[0] = Teacher::where('id', $id)->first();
+        $data[1] = Rating::where('teacher_id', $id)->get();
+        if(is_null($data[1])){
+            return response()->json([
+                'status'=>'500',
+                'response'=>'No rating available'
+            ], 200);
+        }else if(is_null($data[0])){
+            return response()->json([
+                'status'=>'500',
+                'response'=>'Teacher not found'
+            ], 200);
+        }
+        $i=0;
+        foreach($data[1] as $d){
+            $data[1][$i] = [
+                'rate'=> $d,
+                'course'=> Course::where('id', $d['course_id'])->first()
+            ];
+            $i++;
+        }
+        return response()->json([
+            'status'=>'200',
+            'response'=>$data
+        ],200);
     }
     public function finishRatingCourse(Request $request){
         $data = $request->all();

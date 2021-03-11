@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class AuthenticationService {
   };
   constructor(private http: HttpClient) { }
   login(data){
-    return this.http.post(`${this.authUrl}/login`,data)
+    return this.http.post(`${this.authUrl}/login`,data);
   }
   handle(token){
     this.set(token);
@@ -28,7 +28,7 @@ export class AuthenticationService {
     if(!item){
       return false;
     }
-    return item['access_token'];
+    return item['token'];
   }
   getRole(){
     let item = JSON.parse(localStorage.getItem('t-s-current-user'));
@@ -75,5 +75,9 @@ export class AuthenticationService {
   getUser(){
     let user = JSON.parse(localStorage.getItem('t-s-current-user'));
     return user ? user : null;
+  }
+  signOut(){
+    this.remove();
+    return this.http.get(`${this.authUrl}/sign-out`);
   }
 }

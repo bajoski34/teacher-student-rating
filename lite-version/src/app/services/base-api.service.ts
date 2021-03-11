@@ -1,5 +1,6 @@
+import { AuthenticationService } from './authentication.service';
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,7 @@ export class BaseApiService {
   private deployment:string = 'https://www.deployment-url.com';
   private local:string = 'http://127.0.0.1:8000/api';
   private baseUrl:string = this.local;
-  constructor(private http: HttpClient) { }
-
+  constructor(private http: HttpClient, private Auth: AuthenticationService) { }
   getAllDepartments(){
     return this.http.get(`${this.baseUrl}/get-all-department`);
   }
@@ -69,5 +69,8 @@ export class BaseApiService {
   }
   hasRatedCourse(data){
     return this.http.post(`${this.baseUrl}/finish-rating-course`, data);
+  }
+  getTeachersAssessment(id){
+    return this.http.get(`${this.baseUrl}/get-teachers-assessment/${id}`);
   }
 }

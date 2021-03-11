@@ -21,8 +21,10 @@ export class NavRightComponent implements OnInit {
    }
 
   logOut(){
-    this.AuthenicationService.remove();
-    return this.router.navigate(['']);
+    this.AuthenicationService.signOut().subscribe(data=>{
+      console.log(data);
+      return this.router.navigate(['']);
+    });
   }
   getPicture(picture){
     return this.SkeletonService.getTeacherPictures(picture);

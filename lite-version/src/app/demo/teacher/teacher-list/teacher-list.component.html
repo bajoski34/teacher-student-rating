@@ -15,8 +15,8 @@
         </tr>
         </thead>
         <tbody>
-            <ng-container  *ngIf="(teachers | async)?.length >0">
-              <tr *ngFor="let teacher of teachers|async" class="t-list">
+            <ng-container  *ngIf="teachers?.length >0">
+              <tr *ngFor="let teacher of teachers" class="t-list">
                 <td><img src="{{fetchPictures(teacher?.profile?.image_path)}}" alt="img" height="35" width="35"></td>
                 <td>{{teacher?.profile?.first_name}}</td>
                 <td>{{teacher?.profile?.last_name}}</td>
@@ -27,14 +27,14 @@
                 <td>
                   <div class="btn-group btn-group-sm" role="group" aria-label="button groups sm">
                     <button type="button" data-toggle="modal" class="btn btn-secondary" (click)="exampleModalPopoversLabel.show(); editItem(teacher)">Edit</button>
-                    <button type="button" class="btn btn-secondary">Review assessment</button>
+                    <button type="button" class="btn btn-secondary" (click)="reviewAssessment(teacher)">Review assessment</button>
                   </div>
                 </td>
               </tr>
           </ng-container>
         </tbody>
       </table>
-      <div class="col-12 text-center" *ngIf="(teachers | async)?.length <1">
+      <div class="col-12 text-center" *ngIf="teachers?.length <1">
         <p>No data available</p>
         <button class="btn btn-primary" [routerLink]="['/authenticated/add-new-teacher']">Add a teacher</button>
       </div>
@@ -71,7 +71,7 @@
             <select id="inputState" class="form-control" formControlName="department"
             [ngClass]="{'error': (validator().department.invalid && validator_toast.isSubmited)}">
               <option selected disabled>{{selectedTeacher?.department?.name |titlecase}}</option>
-              <option *ngFor="let department of departments |async" value="{{department?.id}}">{{department?.name |titlecase}}</option>
+              <option *ngFor="let department of departments" value="{{department?.id}}">{{department?.name |titlecase}}</option>
             </select>
           </div>
         </div>

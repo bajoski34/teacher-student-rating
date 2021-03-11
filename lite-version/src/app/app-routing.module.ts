@@ -1,3 +1,4 @@
+import { TeacherAssessmentComponent } from './demo/teacher/teacher-assessment/teacher-assessment.component';
 import { StudentRatingOverviewComponent } from './demo/rating/student-rating-overview/student-rating-overview.component';
 import { StartRatingComponent } from './demo/rating/start-rating/start-rating.component';
 import { DepartmentListComponent } from './demo/department/department-list/department-list.component';
@@ -89,6 +90,10 @@ const routes: Routes = [
         component: StudentRatingOverviewComponent
       },
       {
+        path: 'teacher/:id/assessment',
+        component: TeacherAssessmentComponent
+      },
+      {
         path: 'dashboard',
         loadChildren: () => import('./demo/dashboard/dashboard.module').then(module => module.DashboardModule)
       },
@@ -115,9 +120,31 @@ const routes: Routes = [
       {
         path: 'sample-page',
         loadChildren: () => import('./demo/pages/sample-page/sample-page.module').then(module => module.SamplePageModule)
+      },
+      {
+        path: 'auth',
+        loadChildren: () => import('./demo/pages/authentication/authentication.module').then(module => module.AuthenticationModule)
+      },
+      {
+        path: 'maintenance',
+        loadChildren: () => import('./demo/pages/maintenance/maintenance.module').then(module => module.MaintenanceModule)
       }
     ]
   }
+  // {
+  //   path: '',
+  //   component: AuthComponent,
+  //   children: [
+  //     {
+  //       path: 'auth',
+  //       loadChildren: () => import('./demo/pages/authentication/authentication.module').then(module => module.AuthenticationModule)
+  //     },
+  //     {
+  //       path: 'maintenance',
+  //       loadChildren: () => import('./demo/pages/maintenance/maintenance.module').then(module => module.MaintenanceModule)
+  //     }
+  //   ]
+  // }
 ];
 
 @NgModule({

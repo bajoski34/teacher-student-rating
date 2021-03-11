@@ -1,8 +1,10 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { BaseApiService } from 'src/app/services/base-api.service';
 import { SkeletonService } from 'src/app/services/skeleton.service';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 @Component({
   selector: 'app-teacher-list',
   templateUrl: './teacher-list.component.html',
@@ -23,10 +25,20 @@ export class TeacherListComponent implements OnInit {
   images: any = [];
   message: any = '';
   submitLoader:boolean = false;
-  constructor(private BaseApi: BaseApiService, private SkeletonService: SkeletonService, private formBuilder: FormBuilder) { }
+  constructor(private BaseApi: BaseApiService,
+              private SkeletonService: SkeletonService,
+              private formBuilder: FormBuilder,
+              private router: Router) { }
 
   ngOnInit() {
-    this.teachers = this.BaseApi.getAllTeachers();
+    this.BaseApi.getAllTeachers().pipe(catchError(err=>of(console.log(err)))).subscribe(data=>{
+      this.teachers = data;
+    });
+    // .subscribe((success)=>{
+    //   this.teachers = success;
+    // },(error)=>{
+    //   console.log(error);
+    // });
     this.updateTeacherForm = this.formBuilder.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
@@ -34,8 +46,16 @@ export class TeacherListComponent implements OnInit {
       department: ['', Validators.required],
       gender: ['', Validators.required]
     });
-    this.departments = this.BaseApi.getAllDepartments();
+    this.BaseApi.getAllDepartments().pipe(catchError(err=>of(console.log(err)))).subscribe(data=>{
+      this.departments = data;
+    })
+    // .subscribe(success=>{
+    //   this.departments = success;
+    // }, error=>{
+    //   console.log(error);
+    // });
   }
+
   validator(){
     return this.updateTeacherForm.controls;
   }
@@ -57,5 +77,8 @@ export class TeacherListComponent implements OnInit {
   }
   editItem(data){
     this.selectedTeacher = data;
+  }
+  reviewAssessment(teacher){
+    return this.router.navigate([`authenticated/teacher/${teacher.profile.id}/assessment`], teacher);
   }
 }

@@ -38,20 +38,7 @@ export class CourseListComponent implements OnInit {
   this.teachers = this.BaseApi.getAllTeachers();
   this.departments = this.BaseApi.getAllDepartments();
   this.user = this.AuthenticationService.getUser();
-  this.ActivatedRoute.paramMap.subscribe(params => {
-    if(params['params']['id']){
-      this.params = params['params']['id'];
-      this.BaseApi.getEnrolledCourses(this.params).subscribe(data=>{
-        if(data['status'] == '200'){
-          this.courses = data['data'];
-        }else{
-          this.courses = [];
-        }
-      });
-    }else{
-      this.BaseApi.getAllCourses().subscribe(data=>{this.courses = data;});
-    }
-  })
+  this.BaseApi.getAllCourses().subscribe(data=>{this.courses = data;});
   this.updateCourseForm = this.formBuilder.group({
       name: ['', Validators.required],
       teacher_id: ['', Validators.required],

@@ -22,13 +22,18 @@ Route::group([
     // Route::post('store-owner-registration', 'AuthController@registerStoreOwner');
     // Route::post('update-changed-password', 'AuthController@changePassword');
     Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
+    // Route::post('logout', 'AuthController@logout');
+    Route::get('sign-out', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
+    // Route::get('session/get','AuthController@accessSessionData');
+    // Route::get('session/set','AuthController@storeSessionData');
+    // Route::get('session/remove','AuthController@deleteSessionData');
 });
 
+
 Route::group([
-    'middleware' => 'api',
+    'middleware' => ['api','access_token'],
 ], function () {
     Route::get('get-all-sections', 'Controller@fetchAllSections');
     Route::get('get-all-section-question', 'Controller@fetSectionAndQuestions');
@@ -53,4 +58,5 @@ Route::group([
     Route::get('get-all-course', 'Controller@getAllCourses');
     Route::get('get-enrolled-course/{id}', 'Controller@getAllEnrolledCourses');
     Route::get('get-unenrolled-course/{id}', 'Controller@getAllUnEnrolledCourses');
+    Route::get('get-teachers-assessment/{id}', 'Controller@getTeachersAssessment');
 });

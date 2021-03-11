@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRatingsTable extends Migration
+class CreateSessionTokensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateRatingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ratings', function (Blueprint $table) {
+        Schema::create('session_tokens', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('question_id');
-            $table->integer('student_id');
-            $table->integer('teacher_id');
-            $table->integer('value');
-            $table->integer('course_id');
+            $table->integer('user_id');
+            $table->longText('token');
+            $table->dateTime('expired_at');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateRatingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ratings');
+        Schema::dropIfExists('session_tokens');
     }
 }

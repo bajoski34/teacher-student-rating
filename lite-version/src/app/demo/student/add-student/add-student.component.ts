@@ -60,7 +60,6 @@ export class AddStudentComponent implements OnInit {
     formData.append('email', this.validator().email.value);
     formData.append('department', this.validator().department.value);
     formData.append('gender', this.validator().gender.value);
-    formData.append('image', this.validator().gender.value);
     formData.append('image[]', this.images[0], this.images[0].name)
     this.BaseApi.addStudent(formData).subscribe(data=>{
       if(data['status']=='200'){

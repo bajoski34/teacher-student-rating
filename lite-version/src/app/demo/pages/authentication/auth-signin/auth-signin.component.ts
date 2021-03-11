@@ -47,6 +47,7 @@ export class AuthSigninComponent implements OnInit {
     formData.append('email', this.loginForm.controls.email.value);
     formData.append('password', this.loginForm.controls.password.value);
     this.AuthenticationService.login(formData).subscribe(data=> {
+      console.log(data);
       if(data['status'] !== '200'){
         this.validation_response.failure.push(data['response']);
         this.validation_response.disable = false;

@@ -35,7 +35,14 @@ export class StartRatingComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.AuthenticationService.getUser();
-    this.user ? this.user = this.user['user'] : this.router.navigate(['']);
+    if(!this.user || this.user['user']['role'] !== 3){
+      this.router.navigate(['/authenticated/maintenance/error'], {
+        queryParams: {error: 'Unauthorized action. You cannot rate a teacher'}
+      });
+    }else{
+      this.user = this.user['user'];
+      console.log(this.user)
+    }
     this.ActivatedRoute.paramMap.subscribe(params => {
       if(params['params']['course_code']){
         this.params = params['params']['course_code'];

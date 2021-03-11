@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Rating extends Model
+class SessionToken extends Model
 {
     protected $fillable = [
-        'question_id', 'student_id','teacher_id', 'value', 'course_id',
+        'user_id', 'token', 'expired_at',
     ];
 }

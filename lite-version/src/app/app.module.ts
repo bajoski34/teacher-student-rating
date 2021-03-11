@@ -18,8 +18,9 @@ import { NavLeftComponent } from './theme/layout/admin/nav-bar/nav-left/nav-left
 import { NavSearchComponent } from './theme/layout/admin/nav-bar/nav-left/nav-search/nav-search.component';
 import { NavRightComponent } from './theme/layout/admin/nav-bar/nav-right/nav-right.component';
 import { ConfigurationComponent } from './theme/layout/admin/configuration/configuration.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToggleFullScreenDirective } from './theme/shared/full-screen/toggle-full-screen';
+import { HeaderInterceptor } from '../interceptors/HeaderInterceptor';
 
 /* Menu Items */
 import { NavigationItem } from './theme/layout/admin/navigation/navigation';
@@ -37,6 +38,7 @@ import { StartRatingComponent } from './demo/rating/start-rating/start-rating.co
 import { CourseListComponent } from './demo/courses/course-list/course-list.component';
 import { EnrolledCoursesComponent } from './demo/courses/enrolled-courses/enrolled-courses.component';
 import { StudentRatingOverviewComponent } from './demo/rating/student-rating-overview/student-rating-overview.component';
+import { TeacherAssessmentComponent } from './demo/teacher/teacher-assessment/teacher-assessment.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,8 @@ import { StudentRatingOverviewComponent } from './demo/rating/student-rating-ove
     StartRatingComponent,
     CourseListComponent,
     EnrolledCoursesComponent,
-    StudentRatingOverviewComponent
+    StudentRatingOverviewComponent,
+    TeacherAssessmentComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +84,7 @@ import { StudentRatingOverviewComponent } from './demo/rating/student-rating-ove
     NgbPopoverModule,
     NgbTooltipModule
   ],
-  providers: [NavigationItem],
+  providers: [NavigationItem,   { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

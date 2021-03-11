@@ -1,17 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use App\Http\Controllers\mail\MailingController;
 use App\OneTimeQuestions;
 use App\OneTimeVerificationCodes;
 use App\Role;
 use App\StoreOwner;
 use App\User;
+use App\SessionToken;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use App\Http\Requests;
 use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
@@ -29,7 +31,11 @@ class AuthController extends Controller
                     [
                         'login',
                         'register',
-                        'changePassword'
+                        'changePassword',
+                        'logout'
+                        // 'accessSessionData',
+                        // 'storeSessionData',
+                        // 'deleteSessionData'
                     ]
             ]
         );
@@ -96,9 +102,45 @@ class AuthController extends Controller
                 'response'=>'incorrect credentials'
                 ]);
         }
-
+        $user_token = SessionToken::where('user_id', auth()->user()['id'])->first();
+        if($user_token){
+            $to = Carbon::now();
+            $from = Carbon::createFromFormat('Y-m-d H:s:i', $user_token['expired_at']);
+            $diff_in_hours = $from->diffInHours($to);
+            if($diff_in_hours >1){
+                SessionToken::where('user_id', auth()->user()['id'])->update([
+                    'token'=> $token,
+                    'expired_at'=> Carbon::now()->addHours(1)
+                ]);
+            }else{
+                SessionToken::where('user_id', auth()->user()['id'])->update([
+                    'token'=> $token
+                ]);
+            }
+        }else{
+            $user_token = SessionToken::create([
+                'user_id'=>auth()->user()['id'],
+                'token'=> $token,
+                'expired_at'=> Carbon::now()->addHours(1)
+            ]);
+        }
         return $this->respondWithToken($token);
     }
+
+    public function accessSessionData(Request $request) {
+        if($request->session()->has('my_name'))
+            echo $request->session()->get('my_name');
+        else
+           echo 'No data in the session';
+     }
+    //  public function storeSessionData(Request $request) {
+    //     $request->session()->put('my_name','Virat Gandhi');
+    //     echo "Data has been added to session";
+    //  }
+     public function deleteSessionData(Request $request) {
+        $request->session()->forget('my_name');
+        echo "Data has been removed from session.";
+     }
 
     /**
      * Get the authenticated User.
@@ -115,10 +157,15 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout()
+    public function logout(Request $request)
     {
-        auth()->logout();
-
+        $header = substr($request->header('Authorization'), 7);
+        return response()->json($header);
+        $s = SessionToken::where('token', $header)->first();
+        if($s){
+            auth()->logout();
+            SessionToken::where('token', $header)->delete();
+        }
         return response()->json(['message' => 'Successfully logged out']);
     }
 
