@@ -1,19 +1,12 @@
 <div class="col-xl-12">
   <div class="col-md-12 col-xl-12">
-    <h5>{{courseInfo?.course?.course_code}}</h5>
-    <hr>
-    <app-card cardTitle="{{courseInfo?.course?.name | titlecase}}" [options]="false" *ngIf="stages == null && !success_message">
+    <app-card cardTitle="Rate teacher" [options]="false" *ngIf="stages == null && !success_message">
       <div class="row">
-        <div class="col-md-10"><h5 class="card-title">Teacher: {{courseInfo?.teacher?.first_name | titlecase}} {{courseInfo?.teacher?.last_name | titlecase}}</h5></div>
-        <div class="col-md-2 text-right"><img src="{{getTeacherImage(courseInfo?.user?.image_path)}}" alt="image" height="100" width="100" class="b-r"></div>
+        <div class="col-md-10"><h5 class="card-title">Teacher: {{courseInfo?.profile?.first_name | titlecase}} {{courseInfo?.teacher?.last_name | titlecase}}</h5></div>
+        <div class="col-md-2 text-right"><img src="{{getTeacherImage(courseInfo?.profile?.image_path)}}" alt="image" height="100" width="100" class="b-r"></div>
       </div>
       <p class="card-text">Welcome, Thank you<br>Please rate based on your experience. Accuracy helps the school to evaluate the teachers</p>
       <a (click)="proceedEvaluation(0)" class="btn btn-primary">Start evaluation</a>
-    </app-card>
-    <app-card cardTitle="{{courseInfo?.course?.name | titlecase}}" [options]="false" *ngIf="success_message">
-      <h5 class="card-title">Teacher: {{courseInfo?.teacher?.first_name | titlecase}} {{courseInfo?.teacher?.last_name | titlecase}}</h5>
-      <p class="card-text">{{success_message}}</p>
-      <a [routerLink]="['/authenticated/view-enrolled-course-list/'+user['id']]" class="btn btn-primary">My course list</a>
     </app-card>
     <app-card *ngIf="stages !== null && !success_message" cardTitle="{{courseInfo?.teacher?.first_name | titlecase}} {{courseInfo?.teacher?.last_name | titlecase}}">
       <h5 class="card-title">{{currentEvaluation?.section?.title}} ({{stages+1}} / {{max_stage}})</h5>
@@ -27,6 +20,9 @@
         </div>
       </div>
       <a (click)="proceedEvaluation(stages+1)" class="btn btn-primary">{{stages !== 4 ? 'Next':'Finish'}}</a>
+    </app-card>
+    <app-card *ngIf="success_message" cardTitle="Rating completed">
+      <h5 class="card-title">{{success_message}}</h5>
     </app-card>
   </div>
 </div>

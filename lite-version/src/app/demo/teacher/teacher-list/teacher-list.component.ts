@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../../../services/authentication.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { BaseApiService } from 'src/app/services/base-api.service';
@@ -25,12 +26,15 @@ export class TeacherListComponent implements OnInit {
   images: any = [];
   message: any = '';
   submitLoader:boolean = false;
+  user: any;
   constructor(private BaseApi: BaseApiService,
               private SkeletonService: SkeletonService,
               private formBuilder: FormBuilder,
-              private router: Router) { }
+              private router: Router,
+              private auth: AuthenticationService) { }
 
   ngOnInit() {
+    this.user = this.auth.getUser();
     this.BaseApi.getAllTeachers().pipe(catchError(err=>of(console.log(err)))).subscribe(data=>{
       this.teachers = data;
     });
@@ -79,6 +83,7 @@ export class TeacherListComponent implements OnInit {
     this.selectedTeacher = data;
   }
   reviewAssessment(teacher){
-    return this.router.navigate([`authenticated/teacher/${teacher.profile.id}/assessment`], teacher);
+    // return this.router.navigate([`authenticated/teacher/${teacher.profile.id}/assessment`], teacher);
+    return this.router.navigate([`authenticated/rate-teacher/${teacher.profile.id}`], teacher);
   }
 }

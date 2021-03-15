@@ -40,8 +40,12 @@ Route::group([
     Route::get('get-evaluation-questions', 'Controller@fetchEvaluationQuestions');
     Route::get('get-all-department', 'Controller@fetchAllDepatments');
     Route::get('get-all-teachers', 'Controller@getAllTeachers');
+    Route::get('get-department-teachers/student/user={id}/type={type}', 'Controller@getDepartmentTeachers');
+    Route::get('get-department-rated-teachers/student/user={id}/type={type}', 'Controller@getRatedDepartmentTeachers');
     Route::get('get-all-student', 'Controller@getAllStudents');
+    Route::get('get-department-student/user={id}', 'Controller@getDepartmentStudents');
     Route::get('get-course-info/{course_code}', 'Controller@getCourseInfo');
+    Route::get('get-teacher-info/{id}', 'Controller@getTeacherInfo');
     Route::post('add-new-teacher', 'Controller@addNewTeacher');
     Route::post('add-new-student', 'Controller@addNewStudent');
     Route::post('add-new-department', 'Controller@addNewDepartment');

@@ -1,3 +1,5 @@
+import { ViewRatedTeacherComponent } from './demo/student/view-rated-teacher/view-rated-teacher.component';
+import { DepartmentTeachersComponent } from './demo/student/department-teachers/department-teachers.component';
 import { TeacherAssessmentComponent } from './demo/teacher/teacher-assessment/teacher-assessment.component';
 import { StudentRatingOverviewComponent } from './demo/rating/student-rating-overview/student-rating-overview.component';
 import { StartRatingComponent } from './demo/rating/start-rating/start-rating.component';
@@ -14,8 +16,6 @@ import { AddTeacherComponent } from './demo/teacher/add-teacher/add-teacher.comp
 import { TeacherListComponent } from './demo/teacher/teacher-list/teacher-list.component';
 import { AddStudentComponent } from './demo/student/add-student/add-student.component';
 import { StudentListComponent } from './demo/student/student-list/student-list.component';
-import { AddCourseComponent } from './demo/courses/add-course/add-course.component';
-import { CourseListComponent } from './demo/courses/course-list/course-list.component';
 const routes: Routes = [
   {
     path: '',
@@ -54,16 +54,12 @@ const routes: Routes = [
         component: TeacherListComponent
       },
       {
-        path: 'view-course-list',
-        component: CourseListComponent
+        path: 'view-unrated-teachers',
+        component: DepartmentTeachersComponent
       },
       {
-        path: 'view-enrolled-course-list/:id',
-        component: CourseListComponent
-      },
-      {
-        path: 'add-new-course',
-        component: AddCourseComponent
+        path: 'view-rated-teachers',
+        component: ViewRatedTeacherComponent
       },
       {
         path: 'add-new-student',
@@ -82,7 +78,7 @@ const routes: Routes = [
         component: DepartmentListComponent
       },
       {
-        path: 'rate-teacher/:course_code',
+        path: 'rate-teacher/:id',
         component: StartRatingComponent
       },
       {

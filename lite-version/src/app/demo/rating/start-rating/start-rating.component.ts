@@ -41,12 +41,11 @@ export class StartRatingComponent implements OnInit {
       });
     }else{
       this.user = this.user['user'];
-      console.log(this.user)
     }
     this.ActivatedRoute.paramMap.subscribe(params => {
-      if(params['params']['course_code']){
-        this.params = params['params']['course_code'];
-        this.BaseApi.getCourseInfo(this.params).subscribe(data=>{
+      if(params['params']['id']){
+        this.params = params['params']['id'];
+        this.BaseApi.getTeacherInfo(this.params).subscribe(data=>{
           this.courseInfo = data;
           });
         this.BaseApi.getAllQuestionAndSection().subscribe(data=>{
@@ -74,27 +73,28 @@ export class StartRatingComponent implements OnInit {
           this.currentEvaluation.section = this.allQestions[stage]['section'];
           this.currentEvaluation.question = this.allQestions[stage]['questions'];
           this.currentEvaluation.current_question = this.allQestions[stage]['questions'][stage];
-          this.BaseApi.postSectionQuestionRating(this.user['id'], this.courseInfo.teacher.id, this.answers_list).subscribe(data =>{
+          this.BaseApi.postSectionQuestionRating(this.user.id, this.courseInfo.profile.id, this.answers_list).subscribe(data =>{
             this.answers_list = [];
             this.next_click = false;
             this.stages = stage;
           });
         }else{
-          this.BaseApi.postSectionQuestionRating(this.user['id'], this.courseInfo.teacher.id, this.answers_list).subscribe(data =>{
+          this.BaseApi.postSectionQuestionRating(this.user['id'], this.courseInfo.profile.id, this.answers_list).subscribe(data =>{
           this.answers_list = [];
           this.next_click = false;
-          this.concludeRating(this.user['id'], this.params);
+          this.success_message = 'Thank you for your response.'
+          // this.concludeRating(this.user['id'], this.params);
           });
         }
       }
     }
   }
-  concludeRating(user_id, course_code){
-    let obj = {user_id: user_id, course_code: course_code};
-    this.BaseApi.hasRatedCourse(obj).subscribe(data=>{
-      this.success_message = data;
-    });
-  }
+  // concludeRating(user_id){
+  //   let obj = {user_id: user_id, course_code: course_code};
+  //   this.BaseApi.hasRatedCourse(obj).subscribe(data=>{
+  //     this.success_message = data;
+  //   });
+  // }
   select_a_value(question_id, answer_value){
     let index = this.answers_list.findIndex(x => x.question_id == question_id);
     if(index<0){

@@ -141,47 +141,78 @@ const NavigationItems = [
       }
     ]
   },
+  // {
+  //   id: 'add_courses',
+  //   title: 'add courses',
+  //   type: 'group',
+  //   icon: 'feather icon-list',
+  //   role: [1],
+  //   children: [
+  //     {
+  //       id: 'Add Course',
+  //       title: 'Add new Course',
+  //       type: 'item',
+  //       icon: 'feather icon-file-text',
+  //       url: '/authenticated/add-new-course',
+  //     }
+  //   ]
+  // },
+  // {
+  //   id: 'my_courses',
+  //   title: 'courses',
+  //   type: 'group',
+  //   role: [1,2,3],
+  //   icon: 'feather icon-align-left',
+  //   children: [
+  //     {
+  //       id: 'Courses',
+  //       title: 'Courses',
+  //       type: 'collapse',
+  //       icon: 'feather icon-menu',
+  //       children: [
+  //         {
+  //           id: 'view-all-courses',
+  //           title: 'View all courses',
+  //           type: 'item',
+  //           url: '/authenticated/view-course-list',
+  //           external: false
+  //         },
+  //         {
+  //           id: 'view-course-list',
+  //           title: 'View past assessment',
+  //           type: 'item',
+  //           url: '/authenticated/view-enrolled-course-list/' + user,
+  //           external: false
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
   {
-    id: 'add_courses',
-    title: 'add courses',
-    type: 'group',
-    icon: 'feather icon-list',
-    role: [1],
-    children: [
-      {
-        id: 'Add Course',
-        title: 'Add new Course',
-        type: 'item',
-        icon: 'feather icon-file-text',
-        url: '/authenticated/add-new-course',
-      }
-    ]
-  },
-  {
-    id: 'my_courses',
-    title: 'courses',
+    id: 'teachers',
+    title: 'teachers',
     type: 'group',
     role: [1,2,3],
     icon: 'feather icon-align-left',
     children: [
       {
-        id: 'Courses',
-        title: 'Courses',
+        id: 'teachers',
+        title: 'Teachers',
         type: 'collapse',
         icon: 'feather icon-menu',
         children: [
           {
-            id: 'view-all-courses',
-            title: 'View all courses',
+            id: 'view-teachers-list',
+            title: 'View teachers to rate',
             type: 'item',
-            url: '/authenticated/view-course-list',
+            url: '/authenticated/view-unrated-teachers',
             external: false
           },
           {
-            id: 'view-course-list',
-            title: 'View past assessment',
+            id: 'view-rated-teachers',
+            title: 'View rated teachers',
             type: 'item',
-            url: '/authenticated/view-enrolled-course-list/' + user,
+            url: '/authenticated/view-rated-teachers',
             external: false
           }
         ]
@@ -218,217 +249,218 @@ const NavigationItems = [
         ]
       }
     ]
-  },
-  {
-    id: 'ui-element',
-    title: 'UI ELEMENT & FORMS',
-    type: 'group',
-    icon: 'feather icon-layers',
-    role: [1,2,3],
-    children: [
-      {
-        id: 'basic',
-        title: 'Basic',
-        type: 'collapse',
-        icon: 'feather icon-box',
-        children: [
-          {
-            id: 'alert',
-            title: 'Alert',
-            type: 'item',
-            url: '/authenticated/basic/alert'
-          },
-          {
-            id: 'button',
-            title: 'Button',
-            type: 'item',
-            url: '/authenticated/basic/button'
-          },
-          {
-            id: 'badges',
-            title: 'Badges',
-            type: 'item',
-            url: '/authenticated/basic/badges'
-          },
-          {
-            id: 'breadcrumb-pagination',
-            title: 'Breadcrumbs & Pagination',
-            type: 'item',
-            url: '/authenticated/basic/breadcrumb-paging'
-          },
-          {
-            id: 'cards',
-            title: 'Cards',
-            type: 'item',
-            url: '/authenticated/basic/cards'
-          },
-          {
-            id: 'collapse',
-            title: 'Collapse',
-            type: 'item',
-            url: '/authenticated/basic/collapse'
-          },
-          {
-            id: 'carousel',
-            title: 'Carousel',
-            type: 'item',
-            url: '/authenticated/basic/carousel'
-          },
-          {
-            id: 'grid-system',
-            title: 'Grid System',
-            type: 'item',
-            url: '/authenticated/basic/grid-system'
-          },
-          {
-            id: 'progress',
-            title: 'Progress',
-            type: 'item',
-            url: '/authenticated/basic/progress'
-          },
-          {
-            id: 'modal',
-            title: 'Modal',
-            type: 'item',
-            url: '/authenticated/basic/modal'
-          },
-          {
-            id: 'spinner',
-            title: 'Spinner',
-            type: 'item',
-            url: '/authenticated/basic/spinner'
-          },
-          {
-            id: 'tabs-pills',
-            title: 'Tabs & Pills',
-            type: 'item',
-            url: '/authenticated/basic/tabs-pills'
-          },
-          {
-            id: 'typography',
-            title: 'Typography',
-            type: 'item',
-            url: '/authenticated/basic/typography'
-          },
-          {
-            id: 'tooltip-popovers',
-            title: 'Tooltip & Popovers',
-            type: 'item',
-            url: '/authenticated/basic/tooltip-popovers'
-          },
-          {
-            id: 'other',
-            title: 'Other',
-            type: 'item',
-            url: '/authenticated/basic/other'
-          }
-        ]
-      },
-      {
-        id: 'forms-element',
-        title: 'Form Elements',
-        type: 'item',
-        url: '/authenticated/forms/basic',
-        icon: 'feather icon-file-text'
-      }
-    ]
-  },
-  {
-    id: 'table',
-    title: 'Table & Charts',
-    type: 'group',
-    icon: 'feather icon-list',
-    role: [1,2,3],
-    children: [
-      {
-        id: 'bootstrap',
-        title: 'Bootstrap Table',
-        type: 'item',
-        url: '/authenticated/tbl-bootstrap/bt-basic',
-        icon: 'feather icon-server'
-      },
-      {
-        id: 'apex',
-        title: 'Apex Chart',
-        type: 'item',
-        url: '/authenticated/charts/apex',
-        icon: 'feather icon-pie-chart'
-      }
-    ]
-  },
-  {
-    id: 'pages',
-    title: 'Pages',
-    type: 'group',
-    icon: 'feather icon-file-text',
-    role: [1,2,3],
-    children: [
-      {
-        id: 'auth',
-        title: 'Authentication',
-        type: 'collapse',
-        icon: 'feather icon-lock',
-        children: [
-          {
-            id: 'signup',
-            title: 'Sign up',
-            type: 'item',
-            url: '/authenticated/auth/signup',
-            target: true,
-            breadcrumbs: false
-          },
-          {
-            id: 'signin',
-            title: 'Sign in',
-            type: 'item',
-            url: '/authenticated/auth/signin',
-            target: true,
-            breadcrumbs: false
-          },
-          {
-            id: 'reset-password',
-            title: 'Reset Password',
-            type: 'item',
-            url: '/authenticated/auth/reset-password',
-            target: true,
-            breadcrumbs: false
-          },
-          {
-            id: 'change-password',
-            title: 'Change Password',
-            type: 'item',
-            url: '/authenticated/auth/change-password',
-            target: true,
-            breadcrumbs: false
-          }
-        ]
-      },
-      {
-        id: 'maintenance',
-        title: 'Maintenance',
-        type: 'collapse',
-        icon: 'feather icon-sliders',
-        children: [
-          {
-            id: 'error',
-            title: 'Error',
-            type: 'item',
-            url: '/authenticated/maintenance/error',
-            target: true,
-            breadcrumbs: false
-          },
-          {
-            id: 'coming-soon',
-            title: 'Maintenance',
-            type: 'item',
-            url: '/authenticated/maintenance/coming-soon',
-            target: true,
-            breadcrumbs: false
-          }
-        ]
-      }
-    ]
   }
+  // ,
+  // {
+  //   id: 'ui-element',
+  //   title: 'UI ELEMENT & FORMS',
+  //   type: 'group',
+  //   icon: 'feather icon-layers',
+  //   role: [1,2,3],
+  //   children: [
+  //     {
+  //       id: 'basic',
+  //       title: 'Basic',
+  //       type: 'collapse',
+  //       icon: 'feather icon-box',
+  //       children: [
+  //         {
+  //           id: 'alert',
+  //           title: 'Alert',
+  //           type: 'item',
+  //           url: '/authenticated/basic/alert'
+  //         },
+  //         {
+  //           id: 'button',
+  //           title: 'Button',
+  //           type: 'item',
+  //           url: '/authenticated/basic/button'
+  //         },
+  //         {
+  //           id: 'badges',
+  //           title: 'Badges',
+  //           type: 'item',
+  //           url: '/authenticated/basic/badges'
+  //         },
+  //         {
+  //           id: 'breadcrumb-pagination',
+  //           title: 'Breadcrumbs & Pagination',
+  //           type: 'item',
+  //           url: '/authenticated/basic/breadcrumb-paging'
+  //         },
+  //         {
+  //           id: 'cards',
+  //           title: 'Cards',
+  //           type: 'item',
+  //           url: '/authenticated/basic/cards'
+  //         },
+  //         {
+  //           id: 'collapse',
+  //           title: 'Collapse',
+  //           type: 'item',
+  //           url: '/authenticated/basic/collapse'
+  //         },
+  //         {
+  //           id: 'carousel',
+  //           title: 'Carousel',
+  //           type: 'item',
+  //           url: '/authenticated/basic/carousel'
+  //         },
+  //         {
+  //           id: 'grid-system',
+  //           title: 'Grid System',
+  //           type: 'item',
+  //           url: '/authenticated/basic/grid-system'
+  //         },
+  //         {
+  //           id: 'progress',
+  //           title: 'Progress',
+  //           type: 'item',
+  //           url: '/authenticated/basic/progress'
+  //         },
+  //         {
+  //           id: 'modal',
+  //           title: 'Modal',
+  //           type: 'item',
+  //           url: '/authenticated/basic/modal'
+  //         },
+  //         {
+  //           id: 'spinner',
+  //           title: 'Spinner',
+  //           type: 'item',
+  //           url: '/authenticated/basic/spinner'
+  //         },
+  //         {
+  //           id: 'tabs-pills',
+  //           title: 'Tabs & Pills',
+  //           type: 'item',
+  //           url: '/authenticated/basic/tabs-pills'
+  //         },
+  //         {
+  //           id: 'typography',
+  //           title: 'Typography',
+  //           type: 'item',
+  //           url: '/authenticated/basic/typography'
+  //         },
+  //         {
+  //           id: 'tooltip-popovers',
+  //           title: 'Tooltip & Popovers',
+  //           type: 'item',
+  //           url: '/authenticated/basic/tooltip-popovers'
+  //         },
+  //         {
+  //           id: 'other',
+  //           title: 'Other',
+  //           type: 'item',
+  //           url: '/authenticated/basic/other'
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       id: 'forms-element',
+  //       title: 'Form Elements',
+  //       type: 'item',
+  //       url: '/authenticated/forms/basic',
+  //       icon: 'feather icon-file-text'
+  //     }
+  //   ]
+  // },
+  // {
+  //   id: 'table',
+  //   title: 'Table & Charts',
+  //   type: 'group',
+  //   icon: 'feather icon-list',
+  //   role: [1,2,3],
+  //   children: [
+  //     {
+  //       id: 'bootstrap',
+  //       title: 'Bootstrap Table',
+  //       type: 'item',
+  //       url: '/authenticated/tbl-bootstrap/bt-basic',
+  //       icon: 'feather icon-server'
+  //     },
+  //     {
+  //       id: 'apex',
+  //       title: 'Apex Chart',
+  //       type: 'item',
+  //       url: '/authenticated/charts/apex',
+  //       icon: 'feather icon-pie-chart'
+  //     }
+  //   ]
+  // },
+  // {
+  //   id: 'pages',
+  //   title: 'Pages',
+  //   type: 'group',
+  //   icon: 'feather icon-file-text',
+  //   role: [1,2,3],
+  //   children: [
+  //     {
+  //       id: 'auth',
+  //       title: 'Authentication',
+  //       type: 'collapse',
+  //       icon: 'feather icon-lock',
+  //       children: [
+  //         {
+  //           id: 'signup',
+  //           title: 'Sign up',
+  //           type: 'item',
+  //           url: '/authenticated/auth/signup',
+  //           target: true,
+  //           breadcrumbs: false
+  //         },
+  //         {
+  //           id: 'signin',
+  //           title: 'Sign in',
+  //           type: 'item',
+  //           url: '/authenticated/auth/signin',
+  //           target: true,
+  //           breadcrumbs: false
+  //         },
+  //         {
+  //           id: 'reset-password',
+  //           title: 'Reset Password',
+  //           type: 'item',
+  //           url: '/authenticated/auth/reset-password',
+  //           target: true,
+  //           breadcrumbs: false
+  //         },
+  //         {
+  //           id: 'change-password',
+  //           title: 'Change Password',
+  //           type: 'item',
+  //           url: '/authenticated/auth/change-password',
+  //           target: true,
+  //           breadcrumbs: false
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       id: 'maintenance',
+  //       title: 'Maintenance',
+  //       type: 'collapse',
+  //       icon: 'feather icon-sliders',
+  //       children: [
+  //         {
+  //           id: 'error',
+  //           title: 'Error',
+  //           type: 'item',
+  //           url: '/authenticated/maintenance/error',
+  //           target: true,
+  //           breadcrumbs: false
+  //         },
+  //         {
+  //           id: 'coming-soon',
+  //           title: 'Maintenance',
+  //           type: 'item',
+  //           url: '/authenticated/maintenance/coming-soon',
+  //           target: true,
+  //           breadcrumbs: false
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // }
 ];
 @Injectable()
 export class NavigationItem {

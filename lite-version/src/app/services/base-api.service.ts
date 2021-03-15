@@ -16,8 +16,17 @@ export class BaseApiService {
   getAllTeachers(){
     return this.http.get(`${this.baseUrl}/get-all-teachers`);
   }
+  getDepartmentTeachers(id, type){
+    return this.http.get(`${this.baseUrl}/get-department-teachers/student/user=${id}/type=${type}`);
+  }
+  getDepartmentRatedTeachers(id, type){
+    return this.http.get(`${this.baseUrl}/get-department-rated-teachers/student/user=${id}/type=${type}`);
+  }
   getAllStudents(){
     return this.http.get(`${this.baseUrl}/get-all-student`);
+  }
+  getDepartmentStudents(id){
+    return this.http.get(`${this.baseUrl}/get-department-student/user=${id}`);
   }
   getCourseInfo(id){
     return this.http.get(`${this.baseUrl}/get-course-info/${id}`);
@@ -72,5 +81,8 @@ export class BaseApiService {
   }
   getTeachersAssessment(id){
     return this.http.get(`${this.baseUrl}/get-teachers-assessment/${id}`);
+  }
+  getTeacherInfo(id){
+    return this.http.get(`${this.baseUrl}/get-teacher-info/${id}`);
   }
 }

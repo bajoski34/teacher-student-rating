@@ -8,8 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     'AdminTableSeeder' => $baseDir . '/database/seeds/AdminTableSeeder.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
-    'App\\Course' => $baseDir . '/app/Course.php',
-    'App\\CourseList' => $baseDir . '/app/CourseList.php',
     'App\\Department' => $baseDir . '/app/Department.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\AuthController' => $baseDir . '/app/Http/Controllers/AuthController.php',
@@ -45,6 +43,7 @@ return array(
     'App\\Section' => $baseDir . '/app/Section.php',
     'App\\SessionToken' => $baseDir . '/app/SessionToken.php',
     'App\\Student' => $baseDir . '/app/Student.php',
+    'App\\StudentRatingStatus' => $baseDir . '/app/StudentRatingStatus.php',
     'App\\Teacher' => $baseDir . '/app/Teacher.php',
     'App\\User' => $baseDir . '/app/User.php',
     'Asm89\\Stack\\Cors' => $vendorDir . '/asm89/stack-cors/src/Asm89/Stack/Cors.php',

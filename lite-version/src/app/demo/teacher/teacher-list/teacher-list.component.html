@@ -26,8 +26,8 @@
                 <td>{{teacher?.department?.name}}</td>
                 <td>
                   <div class="btn-group btn-group-sm" role="group" aria-label="button groups sm">
-                    <button type="button" data-toggle="modal" class="btn btn-secondary" (click)="exampleModalPopoversLabel.show(); editItem(teacher)">Edit</button>
-                    <button type="button" class="btn btn-secondary" (click)="reviewAssessment(teacher)">Review assessment</button>
+                    <button type="button" *ngIf="user.user.role == 1" data-toggle="modal" class="btn btn-secondary" (click)="exampleModalPopoversLabel.show(); editItem(teacher)">Edit</button>
+                    <button type="button" class="btn btn-secondary" (click)="reviewAssessment(teacher)">Rate</button>
                   </div>
                 </td>
               </tr>

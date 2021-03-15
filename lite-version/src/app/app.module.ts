@@ -33,12 +33,13 @@ import { AddStudentComponent } from './demo/student/add-student/add-student.comp
 import { StudentListComponent } from './demo/student/student-list/student-list.component';
 import { AddDepartmentComponent } from './demo/department/add-department/add-department.component';
 import { DepartmentListComponent } from './demo/department/department-list/department-list.component';
-import { AddCourseComponent } from './demo/courses/add-course/add-course.component';
 import { StartRatingComponent } from './demo/rating/start-rating/start-rating.component';
-import { CourseListComponent } from './demo/courses/course-list/course-list.component';
-import { EnrolledCoursesComponent } from './demo/courses/enrolled-courses/enrolled-courses.component';
 import { StudentRatingOverviewComponent } from './demo/rating/student-rating-overview/student-rating-overview.component';
 import { TeacherAssessmentComponent } from './demo/teacher/teacher-assessment/teacher-assessment.component';
+import { DepartmentTeachersComponent } from './demo/student/department-teachers/department-teachers.component';
+import { ViewRatedTeacherComponent } from './demo/student/view-rated-teacher/view-rated-teacher.component';
+import { DepartmentStudentComponent } from './demo/teacher/department-student/department-student.component';
+import { MyPerformanceComponent } from './demo/teacher/my-performance/my-performance.component';
 
 @NgModule({
   declarations: [
@@ -62,12 +63,13 @@ import { TeacherAssessmentComponent } from './demo/teacher/teacher-assessment/te
     StudentListComponent,
     AddDepartmentComponent,
     DepartmentListComponent,
-    AddCourseComponent,
     StartRatingComponent,
-    CourseListComponent,
-    EnrolledCoursesComponent,
     StudentRatingOverviewComponent,
-    TeacherAssessmentComponent
+    TeacherAssessmentComponent,
+    DepartmentTeachersComponent,
+    ViewRatedTeacherComponent,
+    DepartmentStudentComponent,
+    MyPerformanceComponent
   ],
   imports: [
     BrowserModule,

@@ -488,8 +488,6 @@ class ComposerStaticInitd7f295883e52117928736a6490114688
     public static $classMap = array (
         'AdminTableSeeder' => __DIR__ . '/../..' . '/database/seeds/AdminTableSeeder.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
-        'App\\Course' => __DIR__ . '/../..' . '/app/Course.php',
-        'App\\CourseList' => __DIR__ . '/../..' . '/app/CourseList.php',
         'App\\Department' => __DIR__ . '/../..' . '/app/Department.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
@@ -525,6 +523,7 @@ class ComposerStaticInitd7f295883e52117928736a6490114688
         'App\\Section' => __DIR__ . '/../..' . '/app/Section.php',
         'App\\SessionToken' => __DIR__ . '/../..' . '/app/SessionToken.php',
         'App\\Student' => __DIR__ . '/../..' . '/app/Student.php',
+        'App\\StudentRatingStatus' => __DIR__ . '/../..' . '/app/StudentRatingStatus.php',
         'App\\Teacher' => __DIR__ . '/../..' . '/app/Teacher.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'Asm89\\Stack\\Cors' => __DIR__ . '/..' . '/asm89/stack-cors/src/Asm89/Stack/Cors.php',

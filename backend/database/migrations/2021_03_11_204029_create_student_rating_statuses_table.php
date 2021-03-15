@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCourseListsTable extends Migration
+class CreateStudentRatingStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateCourseListsTable extends Migration
      */
     public function up()
     {
-        Schema::create('course_lists', function (Blueprint $table) {
+        Schema::create('student_rating_statuses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('course_id');
             $table->integer('student_id');
+            $table->integer('teacher_id');
+            $table->enum('status', ['finished', 'progress']);
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateCourseListsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_lists');
+        Schema::dropIfExists('student_rating_statuses');
     }
 }

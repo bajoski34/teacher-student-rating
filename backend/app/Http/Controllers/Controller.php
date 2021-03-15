@@ -15,8 +15,7 @@ use App\Student;
 use App\Section;
 use App\Question;
 use App\Department;
-use App\CourseList;
-use App\Course;
+use App\StudentRatingStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -173,7 +172,79 @@ class Controller extends BaseController
         }
         return response()->json($allDetails);
     }
+    public function getDepartmentTeachers($user_id, $type){
+        $user = [];
+        if($type == 'student'){
+            $user = Student::where('user_id', $user_id)->first();
+        }
+        $teachers = Teacher::where('department_id', $user['department_id'])->get();
+        $allDetails = [];
+        $i=0;
+        foreach($teachers as $teacher){
+            if(is_null(Rating::where('teacher_id', $teacher['id'])->where('student_id', $user['id'])->first())){
+                $department = Department::where('id', $teacher->department_id)->first();
+                $user = User::where('id', $teacher['user_id'])->first();
+                $allDetails[$i] = [
+                    'profile'=>$teacher,
+                    'department'=>$department
+                ];
+                $allDetails[$i]['profile']['image_path']=$user->image_path;
+                $i++;
+            }
+        }
+        return response()->json($allDetails);
+    }
+    public function getRatedDepartmentTeachers($user_id, $type){
+        $user = [];
+        if($type == 'student'){
+            $user = Student::where('user_id', $user_id)->first();
+        }
+        $teachers = Teacher::where('department_id', $user['department_id'])->get();
+        $allDetails = [];
+        $i=0;
+        foreach($teachers as $teacher){
+            if(!is_null(Rating::where('teacher_id', $teacher['id'])->where('student_id', $user['id'])->first())){
+                $department = Department::where('id', $teacher->department_id)->first();
+                $user = User::where('id', $teacher['user_id'])->first();
+                $allDetails[$i] = [
+                    'profile'=>$teacher,
+                    'department'=>$department
+                ];
+                $allDetails[$i]['profile']['image_path']=$user->image_path;
+                $i++;
+            }
+        }
+        return response()->json($allDetails);
+    }
+    public function getTeacherInfo($id){
+        $teacher = Teacher::where('id', $id)->first();
+        $allDetails = [];
+        $department = Department::where('id', $teacher->department_id)->first();
+        $user = User::where('id', $teacher['user_id'])->first();
+        $allDetails = [
+            'profile'=>$teacher,
+            'department'=>$department
+        ];
+        $allDetails['profile']['image_path']=$user->image_path;
+        return response()->json($allDetails);
+    }
     public function getAllStudents(){
+        $students = Student::all();
+        $allDetails = [];
+        $i=0;
+        foreach($students as $student){
+            $department = Department::where('id', $student->department_id)->first();
+            $user = User::where('id', $student['user_id'])->first();
+            $allDetails[$i] = [
+                'profile'=>$student,
+                'department'=>$department
+            ];
+            $allDetails[$i]['profile']['image_path']=$user->image_path;
+            $i++;
+        }
+        return response()->json($allDetails);
+    }
+    public function getDepartmentStudents(){
         $students = Student::all();
         $allDetails = [];
         $i=0;
@@ -454,6 +525,23 @@ class Controller extends BaseController
                     'teacher_id' => $teacher_id,
                     'value'=>$rating['answer']
                 ]);
+            }
+            $ha_r = StudentRatingStatus::where('student_id', $student_id)->where('teacher_id',  $teacher_id)->first();
+            if(is_null($ha_r)){
+                StudentRatingStatus::create([
+                    'student_id'=>$student_id,
+                    'teacher_id' => $teacher_id,
+                    'status'=> 'progress'
+                ]);
+            }else{
+                $quest = Question::latest()->first();
+                $has = Rating::where('question_id', $quest['id'])->where('student_id', $student_id)
+                        ->where('teacher_id', $teacher_id)->first();
+                if($has){
+                    StudentRatingStatus::where('student_id', $student_id)->where('teacher_id',  $teacher_id)->update([
+                        'status'=> 'finished'
+                    ]);
+                }
             }
         }
         return response()->json([
