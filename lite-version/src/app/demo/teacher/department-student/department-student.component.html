@@ -14,20 +14,20 @@
         </tr>
         </thead>
         <tbody>
-            <ng-container  *ngIf="teachers?.length >0">
-              <tr *ngFor="let teacher of students" class="t-list">
-                <td><img src="{{fetchPictures(teacher?.profile?.image_path)}}" alt="img" height="35" width="35"></td>
-                <td>{{teacher?.profile?.first_name}}</td>
-                <td>{{teacher?.profile?.last_name}}</td>
-                <td>{{teacher?.profile?.matric_no}}</td>
-                <td>{{teacher?.profile?.email}}</td>
-                <td>{{teacher?.profile?.gender == 1 ? 'Male' : 'Female'}}</td>
-                <td>{{teacher?.department?.name}}</td>
+            <ng-container  *ngIf="students?.length >0">
+              <tr *ngFor="let student of students" class="t-list">
+                <td><img src="{{fetchPictures(student?.profile?.image_path)}}" alt="img" height="35" width="35"></td>
+                <td>{{student?.profile?.first_name}}</td>
+                <td>{{student?.profile?.last_name}}</td>
+                <td>{{student?.profile?.matric_no}}</td>
+                <td>{{student?.profile?.email}}</td>
+                <td>{{student?.profile?.gender == 1 ? 'Male' : 'Female'}}</td>
+                <td>{{student?.department?.name}}</td>
               </tr>
           </ng-container>
         </tbody>
       </table>
-      <div class="col-12 text-center" *ngIf="teachers?.length <1">
+      <div class="col-12 text-center" *ngIf="students?.length <1">
         <p>No data available</p>
       </div>
     </div>

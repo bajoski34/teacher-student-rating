@@ -550,9 +550,9 @@ class Controller extends BaseController
         ]);
     }
     public function getTeachersAssessment($id){
-        $data[2];
-        $data[0] = Teacher::where('id', $id)->first();
-        $data[1] = Rating::where('teacher_id', $id)->get();
+        $data = [];
+        $data[0] = Teacher::where('user_id', $id)->first();
+        $data[1] = Rating::where('teacher_id', $data[0]['id'])->get();
         if(is_null($data[1])){
             return response()->json([
                 'status'=>'500',
@@ -564,17 +564,59 @@ class Controller extends BaseController
                 'response'=>'Teacher not found'
             ], 200);
         }
-        $i=0;
+        $mappedData = [
+            [
+                'name' => 'Teaching methodology',
+                'data' => [],
+                'max'=> Section::where('title', 'Teaching methodology')->first()['rate_max']
+            ],
+            [
+                'name' => 'Assessment procedures',
+                'data' => [],
+                'max'=> Section::where('title', 'Assessment procedures')->first()['rate_max']
+            ],
+            [
+                'name' => 'Integration of faith/christian concepts/values in teaching',
+                'data' => [],
+                'max'=> Section::where('title', 'Integration of faith/christian concepts/values in teaching')->first()['rate_max']
+            ],
+            [
+                'name' => 'Classroom management',
+                'data' => [],
+                'max'=> Section::where('title', 'Classroom management')->first()['rate_max']
+            ],
+            [
+                'name' => 'Teachers attendance and punctuality',
+                'data' => [],
+                'max'=> Section::where('title', 'Teachers attendance and punctuality')->first()['rate_max']
+            ]
+        ];
+        error_log($data[1]);
         foreach($data[1] as $d){
-            $data[1][$i] = [
-                'rate'=> $d,
-                'course'=> Course::where('id', $d['course_id'])->first()
-            ];
+            foreach($data[1] as $d){
+                $section_id = Question::where('id', $d['question_id'])->first()['section_id'];
+                $section = Section::where('id', $section_id)->first();
+                for($i=0;$i<count($mappedData);$i++){
+                    $ret = $mappedData[$i];
+                    if($section['title'] == $ret['name']){
+                        array_push($ret['data'], $d['value']/$ret['max']);
+                        // return response()->json([
+                        //     'status'=>'200',
+                        //     'response'=>count($ret['data'])
+                        // ],200);
+                        $mappedData[$i]['data'] = $ret['data'];
+                    }
+                }
+            }
+        }
+        $i=0;
+        foreach($mappedData as $list){
+            $mappedData[$i]['data'] = (array_sum($list['data'])/count($list['data'])) * 100;
             $i++;
         }
         return response()->json([
             'status'=>'200',
-            'response'=>$data
+            'response'=>$mappedData
         ],200);
     }
     public function finishRatingCourse(Request $request){

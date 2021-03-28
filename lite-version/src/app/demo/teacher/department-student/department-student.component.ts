@@ -29,7 +29,10 @@ export class DepartmentStudentComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.auth.getUser()['user'];
-    this.students = this.BaseApi.getDepartmentStudents(this.user.id);
+    this.BaseApi.getDepartmentStudents(this.user.id).subscribe(data=>{
+      console.log(data);
+      this.students = data;
+    })
   }
   fetchPictures(image){
     return this.SkeletonService.getStudentPictures(image);

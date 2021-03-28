@@ -1837,22 +1837,30 @@ export class ChartDB {
       curve: 'straight',
       dashArray: [0, 8, 5]
     },
-    colors: ['#0e9e4a', '#ffa21d', '#ff5252'],
+    colors: ['#0e9e4a', '#ffa21d', '#ff5252', '#000000', '#00acc1'],
     series: [{
-      name: 'Session Duration',
+      name: 'Teaching methodology',
       data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
     },
       {
-        name: 'Page Views',
+        name: 'Assessment procedures',
         data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
       },
       {
-        name: 'Total Visits',
-        data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
+        name: 'Integration of faith/christian concepts/values in teaching',
+        data: [75, 45, 45, 99, 75, 38, 62, 47, 82, 56, 45, 35]
+      },
+      {
+        name: 'Classroom management',
+        data: [99, 45, 82, 99, 75, 87, 82, 47, 45, 56, 74, 82]
+      },
+      {
+        name: 'Teachers attendance and punctuality',
+        data: [62, 57, 74, 99, 75, 38, 62, 47, 82, 56, 56, 47]
       }
     ],
     title: {
-      text: 'Page Statistics',
+      text: 'Statistics',
       align: 'left'
     },
     markers: {
@@ -1870,15 +1878,27 @@ export class ChartDB {
     tooltip: {
       y: [{
         title: {
-          formatter: (val) => val + ' (mins)'
+          formatter: (val) => val + ' %'
         }
       }, {
         title: {
-          formatter: (val) =>  val + ' per session'
+          formatter: (val) =>  val + ' %'
         }
       }, {
         title: {
-          formatter: (val) => val
+          formatter: (val) => val + ' %'
+        }
+      }, {
+        title: {
+          formatter: (val) => val + ' %'
+        }
+      }, {
+        title: {
+          formatter: (val) => val + ' %'
+        }
+      }, {
+        title: {
+          formatter: (val) => val + ' %'
         }
       }]
     },
@@ -3005,8 +3025,9 @@ export class ChartDB {
       height: 320,
       type: 'pie',
     },
-    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-    series: [44, 55, 13, 43, 22],
+    labels: ['Teaching methodology', 'Assessment procedures', 'Integration of faith/christian concepts/values in teaching',
+    'Classroom management', 'Teachers attendance and punctuality'],
+    series: [],
     colors: ['#4680ff', '#0e9e4a', '#00acc1', '#ffa21d', '#ff5252'],
     legend: {
       show: true,

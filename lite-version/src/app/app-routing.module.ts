@@ -1,3 +1,5 @@
+import { DepartmentStudentComponent } from './demo/teacher/department-student/department-student.component';
+import { MyPerformanceComponent } from './demo/teacher/my-performance/my-performance.component';
 import { ViewRatedTeacherComponent } from './demo/student/view-rated-teacher/view-rated-teacher.component';
 import { DepartmentTeachersComponent } from './demo/student/department-teachers/department-teachers.component';
 import { TeacherAssessmentComponent } from './demo/teacher/teacher-assessment/teacher-assessment.component';
@@ -60,6 +62,14 @@ const routes: Routes = [
       {
         path: 'view-rated-teachers',
         component: ViewRatedTeacherComponent
+      },
+      {
+        path: 'teacher/my-performance',
+        component: MyPerformanceComponent
+      },
+      {
+        path: 'teacher/department-student',
+        component: DepartmentStudentComponent
       },
       {
         path: 'add-new-student',
