@@ -68,6 +68,10 @@ const routes: Routes = [
         component: MyPerformanceComponent
       },
       {
+        path: 'teacher/my-performance/:teacher_id',
+        component: MyPerformanceComponent
+      },
+      {
         path: 'teacher/department-student',
         component: DepartmentStudentComponent
       },

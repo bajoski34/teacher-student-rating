@@ -84,6 +84,6 @@ export class TeacherListComponent implements OnInit {
   }
   reviewAssessment(teacher){
     // return this.router.navigate([`authenticated/teacher/${teacher.profile.id}/assessment`], teacher);
-    return this.router.navigate([`authenticated/rate-teacher/${teacher.profile.id}`], teacher);
+    return this.router.navigate([`authenticated/teacher/my-performance/${teacher.profile.id}`], teacher);
   }
 }

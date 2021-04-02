@@ -63,4 +63,5 @@ Route::group([
     Route::get('get-enrolled-course/{id}', 'Controller@getAllEnrolledCourses');
     Route::get('get-unenrolled-course/{id}', 'Controller@getAllUnEnrolledCourses');
     Route::get('get-teachers-assessment/{id}', 'Controller@getTeachersAssessment');
+    Route::get('get-teachers-assessment-with-teacher-id/{id}', 'Controller@getTeachersAssessmentWithTeacherId');
 });

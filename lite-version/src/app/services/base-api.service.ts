@@ -82,6 +82,9 @@ export class BaseApiService {
   getTeachersAssessment(id){
     return this.http.get(`${this.baseUrl}/get-teachers-assessment/${id}`);
   }
+  getTeachersAssessmentWithTeacherId(id){
+    return this.http.get(`${this.baseUrl}/get-teachers-assessment-with-teacher-id/${id}`);
+  }
   getTeacherInfo(id){
     return this.http.get(`${this.baseUrl}/get-teacher-info/${id}`);
   }
