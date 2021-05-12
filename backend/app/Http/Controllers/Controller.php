@@ -9,6 +9,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use App\User;
 use App\Role;
+use App\Course;
 use App\Rating;
 use App\Teacher;
 use App\Student;
@@ -23,10 +24,12 @@ use Illuminate\Support\Facades\Validator;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
     public function fetchAllSections(){
         $allSections = Section::all();
         return response()->json($allSections);
     }
+
     public function fetchAllQuestions(){
         $allQuestions = Question::all();
         return response()->json($allQuestions);
@@ -46,10 +49,12 @@ class Controller extends BaseController
         }
         return response()->json($evaluation);
     }
+
     public function fetchAllDepatments(){
         $allDepartments = Department::all();
         return response()->json($allDepartments);
     }
+
     public function addNewTeacher(Request $request){
         $data = $request->all();
         $rules = [
@@ -103,6 +108,7 @@ class Controller extends BaseController
         }
         return response()->json('success');
     }
+
     public function addNewStudent(Request $request){
         $data = $request->all();
         $rules = [
@@ -156,6 +162,36 @@ class Controller extends BaseController
         }
         return response()->json('success');
     }
+    // public function addNewCourse(Request $request){
+    //     $data = $request->all();
+    //     $rules = [
+    //         'name'=>'required|string',
+    //         'course_code'=>'required|string',
+    //         'department_id'=>'required|string',
+    //         'teacher_id'=>'required|integer',
+    //     ];
+    //     $validators = Validator::make($data, $rules);
+    //     if($validators->fails()){
+    //         return response()->json([
+    //             'status'=>'500',
+    //             'response'=>$validators->errors()
+    //         ]);
+    //     }
+
+    //         $course = Course::create([
+    //             'name'=>$data['name'],
+    //             'course_code'=>$data['course_code'],
+    //             'department_id'=>$data['department_id'],
+    //             'teacher_id'=> $data['teacher_id'],
+    //             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+    //             'updated_at' => DB::raw('CURRENT_TIMESTAMP'),
+    //         ]);
+    //         return response()->json([
+    //             'status'=> '200',
+    //             'response'=> 'successfully added Course'
+    //         ]);
+    // }
+
     public function getAllTeachers(Request $request){
         $teachers = Teacher::all();
         $allDetails = [];
@@ -172,6 +208,7 @@ class Controller extends BaseController
         }
         return response()->json($allDetails);
     }
+
     public function getDepartmentTeachers($user_id, $type){
         $user = [];
         if($type == 'student'){
@@ -194,6 +231,7 @@ class Controller extends BaseController
         }
         return response()->json($allDetails);
     }
+
     public function getRatedDepartmentTeachers($user_id, $type){
         $user = [];
         if($type == 'student'){
@@ -228,11 +266,13 @@ class Controller extends BaseController
         $allDetails['profile']['image_path']=$user->image_path;
         return response()->json($allDetails);
     }
+
     public function getAllStudents(){
         $students = Student::all();
         $allDetails = [];
         $i=0;
         foreach($students as $student){
+
             $department = Department::where('id', $student->department_id)->first();
             $user = User::where('id', $student['user_id'])->first();
             $allDetails[$i] = [
@@ -244,11 +284,13 @@ class Controller extends BaseController
         }
         return response()->json($allDetails);
     }
+
     public function getDepartmentStudents(){
         $students = Student::all();
         $allDetails = [];
         $i=0;
         foreach($students as $student){
+
             $department = Department::where('id', $student->department_id)->first();
             $user = User::where('id', $student['user_id'])->first();
             $allDetails[$i] = [
@@ -260,18 +302,23 @@ class Controller extends BaseController
         }
         return response()->json($allDetails);
     }
+
     public function addNewDepartment(Request $request){
+
         $data = $request->all();
         $rule = [
             'name'=>'required'
         ];
         $validators = Validator::make($data, $rule);
+
         if($validators->fails()){
+
             return response()->json([
                 'status'=>'500',
                 'response'=>$validators->errors()
             ]);
         }
+
         $department = Department::where('name', $data['name'])->first();
         if($department){
             return response()->json([
@@ -287,6 +334,7 @@ class Controller extends BaseController
             'response'=>'successfully created department'
         ]);
     }
+
     public function deleteDepartment(Request $request){
         $data = $request->all();
         if(Student::where('department_id', $data['id'])->first()){
@@ -306,6 +354,7 @@ class Controller extends BaseController
         Department::where('id', $data['id'])->delete();
         return response()->json('successfully deleted department');
     }
+
     public function addNewCourse(Request $request){
         $data=$request->all();
         $dep_code;
@@ -317,15 +366,18 @@ class Controller extends BaseController
             }
         }
         $new_course = new Course();
-        $new_course->name = $data['name'];
-        $new_course->course_code = $dep_code;
+        $new_course->name = $data['course_name'];
+        $new_course->course_code = $data['course_code'];
         $new_course->department_id = $data['department_id'];
         if(isset($data['teacher_id'])){
             $new_course->teacher_id = $data['teacher_id'];
         }
+        $new_course->created_at = Carbon::now();
+        $new_course->updated_at = Carbon::now();
         $new_course->save();
-        return response()->json('Course created');
+        return response()->json(["message"=>"course successfully created", "status" => 200]);
     }
+
     public function enableDisableRating(Request $request){
         $data = $request->all();
         Department::where('id', $data['id'])->update([
@@ -333,42 +385,78 @@ class Controller extends BaseController
         ]);
         return response()->json('Rating enabled');
     }
+
     public function enableAllRating(){
         DB::table('departments')->update(['rating_activation'=>1]);
         return response()->json('All courses can be rated now');
     }
+
     public function disableAllRating(){
         DB::table('departments')->update(['rating_activation'=>0]);
         return response()->json('No course can be rated anymore');
     }
-    public function getAllCourses(){
+
+    public function getAllCourses($user_id){
         $all_courses = Course::all();
-        if(count($all_courses) > 0){
-            $lists = [];
-            $i = 0;
-            foreach($all_courses as $course){
-                $department = Department::where('id', $course['department_id'])->first();
-                if($course['teacher_id'] == NULL){
-                    $lists[$i] = [
-                        'course'=> $course,
-                        'department'=>$department,
-                        'teacher'=>[]
-                    ];
-                    $i++;
-                }else{
-                    $teacher = Teacher::where('id', $course['teacher_id'])->first();
-                    $lists[$i] = [
-                        'course'=> $course,
-                        'department'=>$department,
-                        'teacher'=>$teacher
-                    ];
-                    $i++;
-                }
+        
+        $user = Student::where('user_id', $user_id)->first();
+
+        $courses = Course::where('department_id', $user['department_id'])->get();
+
+        if(!empty($courses)){
+            foreach ($courses as $course){
+                $teacher  = Teacher::where('teacher_id', $course['teacher_id'])->first();
+
+                $course['teacher_name'] = $teacher->first_name." ".$teacher->last_name;
+                $course['teacher'] = $teacher;
             }
-            return response()->json($lists);
+            return response()->json($courses);
         }
+
         return response()->json([]);
     }
+    public function getAllCoursesTeacher($teacher_email){
+        $all_courses = Course::all();
+        
+        $user = Teacher::where('email', $teacher_email)->first();
+
+        $courses = Course::where('teacher_id', $user['teacher_id'])->get();
+
+        if(!empty($courses)){
+            foreach ($courses as $course){
+                $teacher  = Teacher::where('teacher_id', $course['teacher_id'])->first();
+                $department  = Department::where('id', $course['department_id'])->first();
+
+                $course['teacher_name'] = $teacher->first_name." ".$teacher->last_name;
+                $course['teacher'] = $teacher;
+                $course['department'] = $department->name;
+            }
+            return response()->json($courses);
+        }
+
+        return response()->json([]);
+    }
+    public function getAllCoursesEverything(){
+        $all_courses = Course::all();
+        
+        if(!empty($all_courses)){
+            foreach ($all_courses as $course){
+                
+                $department  = Department::where('id', $course['department_id'])->first();
+                $teacher  = Teacher::where('teacher_id', $course['teacher_id'])->first();
+
+                $course['department'] = $department->name;
+                $course['teacher_name'] = $teacher->first_name." ".$teacher->last_name;
+            }
+
+            return response()->json($all_courses);
+        }
+
+        
+
+        return response()->json([]);
+    }
+
     public function updateCourse(Request $request){
         $data = $request->all();
         if(isset($data['teacher_id'])){
@@ -404,6 +492,7 @@ class Controller extends BaseController
             'data'=>$lists
         ]);
     }
+
     public function enrollForCourse(Request $request){
         $data = $request->all();
         $student = Student::where('user_id', User::where('id', $data['user_id'])
@@ -423,6 +512,7 @@ class Controller extends BaseController
             'response'=>'successfully enrolled for the selected courses',
         ]);
     }
+
     public function getCourseInfo($course_code){
         $course = Course::where('course_code', $course_code)->first();
         $department = Department::where('id', $course['id'])->first();
@@ -449,6 +539,7 @@ class Controller extends BaseController
             'response'=>'successfully unenrolled for the selected courses',
         ]);
     }
+
     public function getAllEnrolledCourses($id){
         $user = User::where('id', $id)->first();
         $student = Student::where('user_id', $user['id'])->first();
@@ -478,6 +569,7 @@ class Controller extends BaseController
             'data'=>[]
         ]);
     }
+
     public function getAllUnEnrolledCourses($id){
         $user = User::where('id', $id)->first();
         $student = Student::where('user_id', $user['id'])->first();
@@ -508,7 +600,8 @@ class Controller extends BaseController
         }
         return response()->json($list);
     }
-    public function rateTeacher($student_id, $teacher_id, Request $request){
+
+    public function rateTeacher($student_id, $teacher_id, $courseid, Request $request){
         $data =  $request->all();
         foreach ( $data as $rating){
             $is_rated = Rating::where('question_id', $rating['question_id'])->where('student_id', $student_id)
@@ -523,6 +616,7 @@ class Controller extends BaseController
                     'question_id'=>$rating['question_id'],
                     'student_id'=>$student_id,
                     'teacher_id' => $teacher_id,
+                    'course_id' => $courseid,
                     'value'=>$rating['answer']
                 ]);
             }
@@ -618,6 +712,7 @@ class Controller extends BaseController
             'response'=>$mappedData
         ],200);
     }
+
     public function getTeachersAssessmentWithTeacherId($id){
         $data = [];
         $data[0] = Teacher::where('id', $id)->first();
@@ -687,6 +782,7 @@ class Controller extends BaseController
             'response'=>$mappedData
         ],200);
     }
+
     public function finishRatingCourse(Request $request){
         $data = $request->all();
         $student = Student::where('user_id', $data['user_id'])->first();
@@ -696,10 +792,12 @@ class Controller extends BaseController
         ]);
         return response()->json('Thank you for evaluating!');
     }
+
     private function getDepartmentCode($department){
         $str = str_split($department, 3);
         return $str[0];
     }
+
     private function deleteImage($path){
         $__dir = '/storage/';
         $image_path = public_path().$__dir.$path;
