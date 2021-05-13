@@ -22,6 +22,21 @@ class AdminTableSeeder extends Seeder
             'created_at' => DB::raw('CURRENT_TIMESTAMP'),
             'updated_at' => DB::raw('CURRENT_TIMESTAMP'),
         ));
+
+        array_push($data, array(
+
+            'first_name'=>'Tireni',
+            'last_name'=>'Obanure',
+            // 'role'=>Role::where('name', ),
+            'role'=> 3,
+            'image_path'=>'teacher/me_1601647762.jpeg',
+            'email'=>'tireni@gmail.com',
+            'password'=>bcrypt('password'),
+            'created_at' => DB::raw('CURRENT_TIMESTAMP'),
+            'updated_at' => DB::raw('CURRENT_TIMESTAMP'),
+
+        ));
+
         DB::table('users')->insert($data);
     }
 }

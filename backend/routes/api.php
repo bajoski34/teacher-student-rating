@@ -50,7 +50,7 @@ Route::group([
     Route::post('add-new-student', 'Controller@addNewStudent');
     Route::post('add-new-department', 'Controller@addNewDepartment');
     Route::post('add-new-course', 'Controller@addNewCourse');
-    Route::post('rate-teacher/{student_id}/{teacher_id}', 'Controller@rateTeacher');
+    Route::post('rate-teacher/{student_id}/{teacher_id}/{courseid}', 'Controller@rateTeacher');
     Route::post('delete-department', 'Controller@deleteDepartment');
     Route::post('enable-disable-rating', 'Controller@enableDisableRating');
     Route::post('update-course', 'Controller@updateCourse');
@@ -59,7 +59,9 @@ Route::group([
     Route::post('finish-rating-course', 'Controller@finishRatingCourse');
     Route::get('enable-all-rating', 'Controller@enableAllRating');
     Route::get('disable-all-rating', 'Controller@disableAllRating');
-    Route::get('get-all-course', 'Controller@getAllCourses');
+    Route::get('get-all-course/{id}', 'Controller@getAllCourses');
+    Route::get('get-all-courses', 'Controller@getAllCoursesEverything');
+    Route::get('get-all-courses/{teacher_id}', 'Controller@getAllCoursesTeacher');
     Route::get('get-enrolled-course/{id}', 'Controller@getAllEnrolledCourses');
     Route::get('get-unenrolled-course/{id}', 'Controller@getAllUnEnrolledCourses');
     Route::get('get-teachers-assessment/{id}', 'Controller@getTeachersAssessment');
